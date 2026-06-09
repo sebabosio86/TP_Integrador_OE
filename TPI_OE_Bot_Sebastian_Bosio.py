@@ -49,11 +49,18 @@ def ejecutar_bot():
                     break # Sale del bucle si la entrada es válida
 
                 except ValueError:
-                    print("Bot: Entrada no válida. Por favor, ingrese un número de DNI sin puntos.\n")
+                    print("Bot: Entrada no válida. Por favor, ingrese un número de DNI sin puntos.")
+                    print("Si desea salir del proceso, ingrese '0' como DNI.")
                     continue  # Repite el ciclo para solicitar nuevamente el DNI 
                 
             
             dni_usuario = str(dni_usuario)  # Convertir a string para comparación con CSV
+
+            # Si el usuario ingresa 0, se cancela el proceso
+            if dni_usuario == "0":
+                print("Bot: Proceso cancelado por el usuario. ¡Hasta luego!")
+                estado = "FIN_PROCESO"
+                continue
 
             # Verificar si el DNI existe en la base de datos
             for empleado in filas:
@@ -79,7 +86,8 @@ def ejecutar_bot():
 
             else:
                 # Camino Infeliz: DNI no encontrado
-                print("Bot: ERROR. El DNI ingresado no pertenece a un empleado de la empresa. Intente de nuevo.\n")
+                print("Bot: ERROR. El DNI ingresado no pertenece a un empleado de la empresa. Intente de nuevo.")
+                print("Si desea salir del proceso, ingrese '0' como DNI.")
                 # Se mantiene en el estado actual
 
 
@@ -93,8 +101,15 @@ def ejecutar_bot():
 
                 except ValueError:
                     print("Bot: ERROR. Entrada no válida. Por favor, ingrese un número entero.\n")
+                    print("Si desea salir del proceso, ingrese '0' como cantidad de días.")
                     continue  # Repite el ciclo para solicitar nuevamente la cantidad de días
             
+            # Si el usuario ingresa 0, se cancela el proceso
+            if dias_solicitados == 0:
+                print("Bot: Proceso cancelado por el usuario. ¡Hasta luego!")
+                estado = "FIN_PROCESO"
+                continue
+
             if dias_solicitados <= 0:
                 print("Bot: ERROR. La cantidad de días debe ser mayor a 0.\n")
                 continue
@@ -107,6 +122,7 @@ def ejecutar_bot():
             else:
                 # Camino Infeliz: Pide más de lo que tiene
                 print(f"Bot: ERROR. No puedes solicitar {dias_solicitados} días. Tu saldo actual es de {dias_disponibles} días. Intenta una cantidad menor.\n")
+                print("Si desea salir del proceso, ingrese '0' como cantidad de días.")
                 # Se mantiene en VERIFICAR_SALDO
 
         # Procesar la solicitud y actualizar el CSV
