@@ -24,6 +24,8 @@ Bot desarrollado en Python que permite a los empleados consultar y solicitar dí
 
 • Gestión de errores y validación de entradas.
 
+• Tras un ingreso inválido se permite finalizar la ejeución.
+
 
 ### Flujo de uso:
 
