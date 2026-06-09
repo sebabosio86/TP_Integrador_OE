@@ -31,12 +31,58 @@ def ejecutar_bot():
 
     estado = "VALIDAR_DNI"
 
-    while estado != "FIN_PROCESO":
-        if estado == "VALIDAR_DNI":
-            # Acá se pide el DNI y comprueba si existe
+# Variables de almacenamiento temporal de datos
+    dni_usuario = ""
+    empleado_encontrado = None
+    dias_disponibles = 0
+    #dias_solicitados = 0
 
-            estado = "VERIFICAR_SALDO"  # Cambia de estado
+    while estado != "FIN_PROCESO":
+        
+        # Validar DNI del usuario
+        if estado == "VALIDAR_DNI":
+            # Validación del DNI, asegurar que el usuario ingrese un número válido
+            while True:
+                try:
+                    # Solicitud de entrada al usuario (Camino Feliz)
+                    dni_usuario = int(input("\nUsuario: Ingrese su número de DNI (sin puntos): "))
+                    break # Sale del bucle si la entrada es válida
+
+                except ValueError:
+                    print("Bot: Entrada no válida. Por favor, ingrese un número de DNI sin puntos.\n")
+                    continue  # Repite el ciclo para solicitar nuevamente el DNI 
+                
             
+            dni_usuario = str(dni_usuario)  # Convertir a string para comparación con CSV
+
+            # Verificar si el DNI existe en la base de datos
+            for empleado in filas:
+                if empleado["dni"] == dni_usuario:
+                    empleado_encontrado = empleado
+                    break
+            
+            # Si encontró el empleado, muestra su nombre y días disponibles, sino muestra error
+            if empleado_encontrado:
+                nombre_empleado = empleado_encontrado["nombre"]
+                dias_disponibles = int(empleado_encontrado["dias_disponibles"])
+                
+                print(f"\nBot: DNI Verificado. Empleado/a: {nombre_empleado}")
+                print(f"Bot: Tiene {dias_disponibles} días de vacaciones disponibles.\n")
+                
+                # Verificar si el saldo de vacaciones es 0
+                if dias_disponibles == 0:
+                    print("Bot: ERROR. No tiene días de vacaciones disponibles. No puedes iniciar solicitudes.")
+                    estado = "FIN_PROCESO"
+
+                else:
+                    estado = "VERIFICAR_SALDO" # Avanza al siguiente paso
+
+            else:
+                # Camino Infeliz: DNI no encontrado
+                print("Bot: ERROR. El DNI ingresado no pertenece a un empleado de la empresa. Intente de nuevo.\n")
+                # Se mantiene en el estado actual
+
+
             
         elif estado == "VERIFICAR_SALDO":
             # Comprueba saldo, si es 0 termina el proceso, sino pide los días a solicitar
@@ -45,3 +91,6 @@ def ejecutar_bot():
         elif estado == "PROCESAR_SOLICITUD":
             # Procesa la solicitud, actualiza el CSV y muestra mensaje de éxito
             estado = "FIN_PROCESO"
+
+# Ejecución del programa
+ejecutar_bot()
