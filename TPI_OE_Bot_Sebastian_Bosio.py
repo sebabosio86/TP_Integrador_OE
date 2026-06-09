@@ -110,9 +110,31 @@ def ejecutar_bot():
                 print(f"Bot: ERROR. No puedes solicitar {dias_solicitados} días. Tu saldo actual es de {dias_disponibles} días. Intenta una cantidad menor.\n")
                 # Se mantiene en VERIFICAR_SALDO
             
+        # Procesar la solicitud y actualizar el CSV
         elif estado == "PROCESAR_SOLICITUD":
-            # Procesa la solicitud, actualiza el CSV y muestra mensaje de éxito
+            # Se resta la cantidad de días solicitados al saldo del empleado
+            nuevo_saldo = dias_disponibles - dias_solicitados
+
+            # Actualización del saldo en la lista. EL tip[o de dato cambia de entero a sting (para guardarlo en el CSV) 
+            empleado_encontrado["dias_disponibles"] = str(nuevo_saldo)
+            
+            # Guardar los cambios en el archivo CSV (sobrescribe el archivo con los nuevos datos)
+            campos = ["dni", "nombre", "dias_disponibles"]
+            with open("base_datos.csv", mode="w", encoding="utf-8", newline="") as archivo:
+
+                # Se escribe el encabezado
+                escritor = csv.DictWriter(archivo, fieldnames=campos)
+                escritor.writeheader()
+                # Se escriben las filas actualizadas
+                escritor.writerows(filas)
+                    
+            print(f"Bot: Se han descontado {dias_solicitados} días de su saldo.")
+            print(f"Bot: Tu nuevo saldo disponible es de {nuevo_saldo} días.")
+
+            # Cambio de estado: Fin de la ejecución
             estado = "FIN_PROCESO"
 
-# Ejecución del programa
+    print("\nBot: Proceso finalizado correctamente. ¡Gracias por usar el Gestor de Vacaciones!")
+
+# Llamada a la función principal para iniciar el bot
 ejecutar_bot()
