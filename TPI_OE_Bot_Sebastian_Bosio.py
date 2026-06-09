@@ -28,15 +28,15 @@ def ejecutar_bot():
     y actualiza el archivo CSV con el nuevo saldo.
     4. FIN_PROCESO: El proceso finalizó, el bot muestra un mensaje de despedida y termina la ejecución.
     '''
-
-    estado = "VALIDAR_DNI"
-
-# Variables de almacenamiento temporal de datos
+    estado = "VALIDAR_DNI"  # Estado inicial
+    
+    # Variables de almacenamiento temporal de datos
     dni_usuario = ""
     empleado_encontrado = None
     dias_disponibles = 0
-    #dias_solicitados = 0
+    dias_solicitados = 0
 
+    # Bucle de ejecución de la máquina de estados
     while estado != "FIN_PROCESO":
         
         # Validar DNI del usuario
@@ -83,7 +83,6 @@ def ejecutar_bot():
                 # Se mantiene en el estado actual
 
 
-            
         # verificar saldo de días solicitados con los disponibles
         elif estado == "VERIFICAR_SALDO":
             while True:
@@ -109,7 +108,7 @@ def ejecutar_bot():
                 # Camino Infeliz: Pide más de lo que tiene
                 print(f"Bot: ERROR. No puedes solicitar {dias_solicitados} días. Tu saldo actual es de {dias_disponibles} días. Intenta una cantidad menor.\n")
                 # Se mantiene en VERIFICAR_SALDO
-            
+
         # Procesar la solicitud y actualizar el CSV
         elif estado == "PROCESAR_SOLICITUD":
             # Se resta la cantidad de días solicitados al saldo del empleado
@@ -128,9 +127,12 @@ def ejecutar_bot():
                 # Se escriben las filas actualizadas
                 escritor.writerows(filas)
                     
+            print("\n--------------------------------------------------")
+            print(f"Bot: ¡Solicitud procesada con éxito!")
             print(f"Bot: Se han descontado {dias_solicitados} días de su saldo.")
             print(f"Bot: Tu nuevo saldo disponible es de {nuevo_saldo} días.")
-
+            print("--------------------------------------------------")
+            
             # Cambio de estado: Fin de la ejecución
             estado = "FIN_PROCESO"
 
