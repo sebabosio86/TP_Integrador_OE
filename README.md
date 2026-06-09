@@ -1,7 +1,9 @@
-# TP_Integrador_OE
-Trabajo Práctico Integrador - Organización Empresarial 2026
+
+# Trabajo Práctico Integrador
+# Organización Empresarial
 
 Alumno: Sebastián Ezequiel Bosio
+
 Comisión 17
 
 # Gestor de Vacaciones
