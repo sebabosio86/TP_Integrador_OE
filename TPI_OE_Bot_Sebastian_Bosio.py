@@ -84,9 +84,31 @@ def ejecutar_bot():
 
 
             
+        # verificar saldo de días solicitados con los disponibles
         elif estado == "VERIFICAR_SALDO":
-            # Comprueba saldo, si es 0 termina el proceso, sino pide los días a solicitar
-            estado = "PROCESAR_SOLICITUD"
+            while True:
+                try:
+                    # Solicitud de cantidad de días a solicitar
+                    dias_solicitados = int(input("Usuario: Ingrese la cantidad de días que desea tomarse: "))
+                    break  # Sale del bucle si la entrada es válida
+
+                except ValueError:
+                    print("Bot: ERROR. Entrada no válida. Por favor, ingrese un número entero.\n")
+                    continue  # Repite el ciclo para solicitar nuevamente la cantidad de días
+            
+            if dias_solicitados <= 0:
+                print("Bot: ERROR. La cantidad de días debe ser mayor a 0.\n")
+                continue
+                
+            # Validación de negocio: Comparar pedido contra saldo del CSV
+            if dias_solicitados <= dias_disponibles:
+                # Cambio de estado: Solicitud válida, se procesa la solicitud
+                estado = "PROCESAR_SOLICITUD"
+
+            else:
+                # Camino Infeliz: Pide más de lo que tiene
+                print(f"Bot: ERROR. No puedes solicitar {dias_solicitados} días. Tu saldo actual es de {dias_disponibles} días. Intenta una cantidad menor.\n")
+                # Se mantiene en VERIFICAR_SALDO
             
         elif estado == "PROCESAR_SOLICITUD":
             # Procesa la solicitud, actualiza el CSV y muestra mensaje de éxito
