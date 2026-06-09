@@ -11,11 +11,17 @@ Bot desarrollado en Python que permite a los empleados consultar y solicitar dí
 ### Funcionalidades:
 
 • Verificación de identidad mediante DNI.
+
 • Consulta automática del saldo de días disponibles.
+
 • Solicitud de días de vacaciones.
+
 • Validación de disponibilidad de saldo.
+
 • Actualización automática de la base de datos.
+
 • Gestión de errores y validación de entradas.
+
 
 ### Flujo de uso:
 
@@ -33,11 +39,17 @@ Si la solicitud es aprobada, el sistema actualiza el saldo de vacaciones y guard
 ### El bot contempla los siguientes casos de error (camino infeliz):
 
 • DNI inexistente.
+
 • DNI ingresado con formato incorrecto.
+
 • Empleado sin días de vacaciones disponibles.
+
 • Cantidad de días menor o igual a cero.
+
 • Solicitud superior al saldo disponible.
+
 • Ingreso de texto cuando se espera un valor numérico.
+
 
 
 
